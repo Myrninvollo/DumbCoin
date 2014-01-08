@@ -1,54 +1,65 @@
-##### DumbAuction
+DumbCoin
+-------
 Simple. Easy. Effective.
 
 
 Features
 -------
 
-Auctions. Integrates with vault. No other crap.
+Economy.
 
 
 Commands
 -------
 
-`/auc start <startPrice> <increment> ` - Starts an auction with the default time for your current item in-hand
+`/money` - Shows your current balance
 
-`/auc start <startPrice> <increment> <time>` - Starts an auction with your current hand for <time> seconds
+`/money <playername>` - Shows <playername>'s balance
 
-`/auc start <startPrice> <increment> <time> <amount>` - Starts an auction of <amount> for <time> off your current hand
+`/money pay <player> <amount>` - Pays <player> <amount> money
 
-`/auc info` - Shows current auction infor
+`/money give <player> <amount>` - Gives <player> <amount> money
 
-`/auc showqueue` - Shows the active queue
+`/money take <player> <amount>` - Takes <amount> money from <player>
 
-`/auc cancel` - Cancels your auction
+`/money set <player> <amount>` - Sets <player>'s account to have <amount> money
 
-`/auc toggle` - Toggles auction spam being sent to your chat
+`/money top [page]` - Shows top players ranked by balance
 
-`/auc reload` - Reloads the configuration
+`/money reload` - Reloads the configuraion
 
 
 Permissions
 ------
 
-`dumbauction.auction` - Permits /auction. Also allows /auc start
+`money.balance` - Allows /money (no arguments)
 
-`dumbauction.admin` - Allows cancelling of auctions as an administrator. (/auc cancel on active auction, regardless of owner)
+`money.balance.others` - Allows /money <player name>
 
-`dumbauction.admin` will also bypass limits (besides the minimum limits) and permit `/auc reload`.
+`money.pay` - Allows /money pay <player> <amount>
+
+`money.give` - Allows /money give <player> <amount>
+
+`money.take` - Allows /money take <player> <amount>
+
+`money.set` - Allows /money set <player> <amount>
+
+`money.top` - Allows /money top
+
+`money.reload` - Allows /money reload
 
 
 Background
 ------
 
-Nothing else works. Might as well write a small simple lightweight auction thingy.
+Simple economy - why not?
 
 
 Jenkins and Stuff
 ------
 
-[Jenkins Job](http://ci.turt2live.com/job/DumbAuction/?)
+[Jenkins Job](http://ci.turt2live.com/job/DumbCoin/?)
 
-[JavaDocs](http://ci.turt2live.com/job/DumbAuction/javadoc/?)
+[JavaDocs](http://ci.turt2live.com/job/DumbCoin/javadoc/?)
 
-[BukkitDev](http://dev.bukkit.org/bukkit-plugins/dumbauction/)
+[BukkitDev](http://dev.bukkit.org/bukkit-plugins/dumbcoin/)

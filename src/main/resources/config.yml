@@ -1,54 +1,9 @@
-# DumbAuction
-# --------------------------
-# Because all you need is auctions - Not an elephant riding a horse in your economy.
-#
-# Not sure what something does? See the commented configuration inside the jar (or at the link below)
-# https://github.com/turt2live/DumbAuction/blob/master/src/main/resources/config.yml
-
-# Prefix for all messages
-prefix: '&7[DumbAuction]'
-
-# Amount of tax per auction
-tax: 5
-
-# Default auction time (in seconds)
-default-time-seconds: 30
-
-# Seconds between auctions. This is a cooldown. Set to '0' to disable.
-seconds-between-auctions: 15
-
-# Maximum start cost
-max-start-cost: 20000
-
-# Maximum bid
-max-bid: 15000
-
-# Minimum start cost. Administrators CANNOT override this
-min-start-cost: 10
-
-# Minimum bid. Administrators CANNOT override this
-min-bid: 10
-
-# Minimum auction time. Administrators CANNOT override this
-min-auction-time: 10
-
-# Maxiumum auction time.
-max-auction-time: 60
-
-# Maximum number of auctions allowed in the queue. Administrators CANNOT override this
-max-queue-size: 3
-
-# When someone bids high enough, sniping can be used to extend the time of the auction
-snipe:
-
-    # If a player bids at this percentage higher than the last bidder, the auction time is
-    # extended. By default this is at 30% meaning the player would have to bid 30% higher
-    # than the last bidder to extend the time.
-    min-percent: 30
-
-    # The amount of time to extend the auction by, on a snipe, in seconds
-    extend-seconds: 10
-
-# Add items here to rename them from the Bukkit name, eg: DIAMOND_SWORD: 'Diamond Stick' to make "Diamond Stick" appear
-# instaed of "Diamond Sword".
-aliases:
+# DumbCoin
+# Because all you want is an Economy.
+start-balance: 10
+advanced:
+    money-format: '${AMOUNT}'
+    decimal-places: 2
+    register-vault: true
+    plural: Dollars
+    singular: Dollar

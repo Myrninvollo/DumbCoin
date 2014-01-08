@@ -1,23 +1,38 @@
-name: DumbAuction
-main: com.turt2live.dumb.DumbAuction
+name: DumbCoin
+main: com.turt2live.dumbcoin.DumbCoin
 version: maven-version-number bjenkins-build-number
 description: I hate downloading plugins.
 author: turt2live
-website: http://github.com/turt2live/DumbAuction
+website: http://github.com/turt2live/DumbCoin
 build: jenkins-build-number
-depend: [Vault]
+softdepend: [Vault]
 commands:
-    auction:
-        aliases: [auc]
-        permission: dumbauction.auction
-        usage: /<command> <start|info|cancel|bid> [...]
-        description: Auction command
-    bid:
-        description: Bid command
+    money:
+        aliases: [eco, bal, balance]
+        usage: /<command> <playerName | pay | give | take | set | top | reload> [...]
+        description: Money command
 permissions:
-    dumbauction.auction:
+    money.balance:
         default: true
-        description: Allows /auction (and /bid)
-    dumbauction.admin:
+        description: Allows /money (no arguments)
+    money.balance.others:
         default: op
-        description: Allows /auction <reload | cancel> (of non-owner auctions) and limit bypass
+        description: Allows /money <player name>
+    money.pay:
+        default: true
+        description: Allows /money pay <player> <amount>
+    money.give:
+        default: op
+        description: Allows /money give <player> <amount>
+    money.take:
+        default: op
+        description: Allows /money take <player> <amount>
+    money.set:
+        default: op
+        description: Allows /money set <player> <amount>
+    money.top:
+        default: true
+        description: Allows /money top
+    money.reload:
+        default: op
+        description: Allows /money reload
