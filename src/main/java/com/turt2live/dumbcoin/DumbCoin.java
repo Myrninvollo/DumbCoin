@@ -179,8 +179,8 @@ public class DumbCoin extends JavaPlugin {
         String baseFormat = getConfig().getString("advanced.money-format", "${AMOUNT}");
         String rounded = round(v, getDecimalPlaces()) + "";
         if (getDecimalPlaces() > 0) {
-            String[] split = rounded.split(".");
-            if (split.length > 1 && split[split.length - 1].length() < getDecimalPlaces()) {
+            String[] split = rounded.split("\\.");
+            if (split[split.length - 1].length() < getDecimalPlaces()) {
                 while (split[split.length - 1].length() < getDecimalPlaces()) {
                     split[split.length - 1] += "0"; // Padding
                 }
@@ -189,7 +189,10 @@ public class DumbCoin extends JavaPlugin {
                     builder.append(s).append(".");
                 }
                 rounded = builder.toString().trim();
+                rounded = rounded.substring(0, rounded.length() - 1);
             }
+        } else {
+            rounded = rounded.split("\\.")[0];
         }
         baseFormat = baseFormat.replaceAll("\\{AMOUNT\\}", rounded);
         return baseFormat;
