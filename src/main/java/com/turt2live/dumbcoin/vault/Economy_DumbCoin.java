@@ -46,7 +46,7 @@ public class Economy_DumbCoin implements Economy {
 
     @Override
     public double getBalance(String playerName) {
-        return 0;
+        return plugin.getBalanceManager().getBalance(playerName);
     }
 
     @Override
