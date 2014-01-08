@@ -1,0 +1,23 @@
+name: DumbAuction
+main: com.turt2live.dumb.DumbAuction
+version: maven-version-number bjenkins-build-number
+description: I hate downloading plugins.
+author: turt2live
+website: http://github.com/turt2live/DumbAuction
+build: jenkins-build-number
+depend: [Vault]
+commands:
+    auction:
+        aliases: [auc]
+        permission: dumbauction.auction
+        usage: /<command> <start|info|cancel|bid> [...]
+        description: Auction command
+    bid:
+        description: Bid command
+permissions:
+    dumbauction.auction:
+        default: true
+        description: Allows /auction (and /bid)
+    dumbauction.admin:
+        default: op
+        description: Allows /auction <reload | cancel> (of non-owner auctions) and limit bypass
