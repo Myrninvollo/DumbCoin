@@ -169,6 +169,10 @@
                                     <pattern>com.turt2live.commonsense</pattern>
                                     <shadedPattern>com.turt2live.${project.name}.commonsense</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>com.turt2live.CommonSense</pattern>
+                                    <shadedPattern>com.turt2live.${project.name}.commonsense</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
