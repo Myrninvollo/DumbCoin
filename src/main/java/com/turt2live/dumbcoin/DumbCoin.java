@@ -1,5 +1,6 @@
 package com.turt2live.dumbcoin;
 
+import com.turt2live.commonsense.DumbPlugin;
 import com.turt2live.dumbcoin.balance.BalanceManager;
 import com.turt2live.dumbcoin.balance.YamlBalanceManager;
 import com.turt2live.dumbcoin.vault.Economy_DumbCoin;
@@ -11,12 +12,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class DumbCoin extends JavaPlugin {
+public class DumbCoin extends DumbPlugin {
 
     public static DumbCoin p;
 
@@ -26,7 +26,7 @@ public class DumbCoin extends JavaPlugin {
     public void onEnable() {
         p = this;
         saveDefaultConfig();
-
+        initCommonSense(72122);
         manager = new YamlBalanceManager(this);
 
         Plugin vault = getServer().getPluginManager().getPlugin("Vault");
