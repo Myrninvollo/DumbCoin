@@ -24,10 +24,18 @@
             <version>${bukkit.version}</version>
         </dependency>
 
+        <!-- Vault -->
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>Vault</artifactId>
             <version>${vault.version}</version>
+        </dependency>
+
+        <!-- CommonSense -->
+        <dependency>
+            <groupId>com.turt2live</groupId>
+            <artifactId>CommonSense</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -134,6 +142,34 @@
                             </links>
                             <linksource>true</linksource>
                             <!-- Links own source files -->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <minimizeJar>true</minimizeJar>
+                            <artifactSet>
+                                <includes>
+                                    <include>com.turt2live:CommonSense</include>
+                                </includes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.turt2live.commonsense</pattern>
+                                    <shadedPattern>com.turt2live.${project.name}.commonsense</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
