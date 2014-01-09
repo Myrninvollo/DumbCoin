@@ -6,6 +6,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class YamlBalanceManager extends BalanceManager {
 
@@ -62,6 +65,18 @@ public class YamlBalanceManager extends BalanceManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Map<String, Double> getBalances() {
+        Map<String, Double> balances = new HashMap<String, Double>();
+        Set<String> keys = yaml.getKeys(false);
+        if (keys != null) {
+            for (String s : keys) {
+                balances.put(s, getBalance(s));
+            }
+        }
+        return balances;
     }
 
 }

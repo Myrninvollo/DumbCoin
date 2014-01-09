@@ -15,12 +15,14 @@ import org.bukkit.plugin.ServicesManager;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 
 public class DumbCoin extends DumbPlugin {
 
     public static DumbCoin p;
 
     private BalanceManager manager;
+    private TopBalanceManager topBalances;
 
     @Override
     public void onEnable() {
@@ -28,6 +30,7 @@ public class DumbCoin extends DumbPlugin {
         saveDefaultConfig();
         initCommonSense(72122);
         manager = new YamlBalanceManager(this);
+        topBalances = new TopBalanceManager();
 
         Plugin vault = getServer().getPluginManager().getPlugin("Vault");
         if (vault != null) {
@@ -51,7 +54,7 @@ public class DumbCoin extends DumbPlugin {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(final CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("money")) {
             if (args.length < 1) {
                 if (sender.hasPermission("money.balance")) {
@@ -132,8 +135,35 @@ public class DumbCoin extends DumbPlugin {
                         }
                     } else sendMessage(sender, ChatColor.RED + "No permission.");
                 } else if (args[0].equalsIgnoreCase("top")) {
-                    // TODO: Top
-                    sendMessage(sender, ChatColor.RED + "NYI");
+                    FutureBalances future = new FutureBalances() {
+                        @Override
+                        public void accept(List<TopBalanceManager.PlayerBalance> balances, int minRank, int maxRank) {
+                            if (balances.size() <= 0) {
+                                sendMessage(sender, ChatColor.RED + "No balances for the range #" + (minRank + 1) + " - #" + (maxRank + 1));
+                                return;
+                            }
+                            sendMessage(sender, ChatColor.YELLOW + "Balances, ranges #" + (minRank + 1) + " - #" + (maxRank + 1));
+                            for (TopBalanceManager.PlayerBalance balance : balances) {
+                                sendMessage(sender, ChatColor.AQUA + "#" + (balance.getRank() + 1) + ChatColor.GREEN + " " + balance.getPlayerName() + " " + ChatColor.DARK_GREEN + format(balance.getBalance()));
+                            }
+                        }
+                    };
+                    int perPage = 10;
+                    int page = 0;
+                    if (args.length > 1) {
+                        try {
+                            page = Integer.parseInt(args[1]);
+                            if (page <= 0) throw new NumberFormatException(); // I'm lazy
+                            page--;
+                        } catch (NumberFormatException e) {
+                            sendMessage(sender, ChatColor.RED + "Not a valid page!");
+                            return true;
+                        }
+                    }
+                    sendMessage(sender, ChatColor.GRAY + "Fetching balances... please wait.");
+                    int min = page * perPage;
+                    int max = min + perPage - 1; // Inclusive
+                    topBalances.getBalances(min, max, future);
                 } else if (args[0].equalsIgnoreCase("help")) {
                     sendMessage(sender, ChatColor.GREEN + "/money" + ChatColor.GRAY + " - " + ChatColor.AQUA + "Shows your current balance");
                     sendMessage(sender, ChatColor.GREEN + "/money <playername>" + ChatColor.GRAY + " - " + ChatColor.AQUA + "Shows <playername>'s balance");
@@ -159,6 +189,10 @@ public class DumbCoin extends DumbPlugin {
             sendMessage(sender, ChatColor.RED + "Something broke.");
         }
         return true;
+    }
+
+    public TopBalanceManager getTopBalanceManager() {
+        return topBalances;
     }
 
     public BalanceManager getBalanceManager() {

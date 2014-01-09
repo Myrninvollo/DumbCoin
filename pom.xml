@@ -9,6 +9,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <bukkit.version>1.7.2-R0.2</bukkit.version>
         <vault.version>1.2.27</vault.version>
+        <junit.version>4.11</junit.version>
 
         <BUILD_NUMBER>LOCAL</BUILD_NUMBER>
     </properties>
@@ -36,6 +37,14 @@
             <groupId>com.turt2live</groupId>
             <artifactId>CommonSense</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!-- JUnit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>

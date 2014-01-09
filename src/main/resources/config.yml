@@ -7,3 +7,4 @@ advanced:
     register-vault: true
     plural: Dollars
     singular: Dollar
+    sort-every-minutes: 30

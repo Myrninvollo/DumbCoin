@@ -2,6 +2,8 @@ package com.turt2live.dumbcoin.balance;
 
 import com.turt2live.dumbcoin.DumbCoin;
 
+import java.util.Map;
+
 public abstract class BalanceManager {
 
     protected DumbCoin plugin;
@@ -19,6 +21,8 @@ public abstract class BalanceManager {
     public abstract void set(String player, double amount);
 
     public abstract void save();
+
+    public abstract Map<String, Double> getBalances();
 
     public boolean hasEnough(String player, double amount) {
         return getBalance(player) >= amount;
