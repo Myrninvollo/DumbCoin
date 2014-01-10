@@ -36,3 +36,6 @@ permissions:
     money.reload:
         default: op
         description: Allows /money reload
+    money.import:
+        default: op
+        description: Allows /money import [pluginName]

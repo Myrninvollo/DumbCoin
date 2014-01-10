@@ -28,6 +28,8 @@ Commands
 
 `/money reload` - Reloads the configuraion
 
+`/money import [pluginName]` - Imports balances from an existing plugin(s)
+
 
 Permissions
 ------
@@ -47,6 +49,8 @@ Permissions
 `money.top` - Allows /money top
 
 `money.reload` - Allows /money reload
+
+`money.import` - Allows /money import [pluginName]
 
 
 Background

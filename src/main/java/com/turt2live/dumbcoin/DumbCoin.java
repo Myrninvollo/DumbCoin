@@ -4,6 +4,7 @@ import com.turt2live.commonsense.DumbPlugin;
 import com.turt2live.dumbcoin.balance.BalanceManager;
 import com.turt2live.dumbcoin.balance.YamlBalanceManager;
 import com.turt2live.dumbcoin.vault.Economy_DumbCoin;
+import com.turt2live.dumbcoin.vault.VaultImport;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -23,6 +24,7 @@ public class DumbCoin extends DumbPlugin {
 
     private BalanceManager manager;
     private TopBalanceManager topBalances;
+    private VaultImport importer;
 
     @Override
     public void onEnable() {
@@ -34,6 +36,7 @@ public class DumbCoin extends DumbPlugin {
 
         Plugin vault = getServer().getPluginManager().getPlugin("Vault");
         if (vault != null) {
+            importer = new VaultImport();
             ServicesManager manager = getServer().getServicesManager();
             Class<? extends Economy> clazz = Economy_DumbCoin.class;
             String name = "DumbCoin";
@@ -177,6 +180,22 @@ public class DumbCoin extends DumbPlugin {
                     if (sender.hasPermission("money.reload")) {
                         reloadConfig();
                         sendMessage(sender, ChatColor.GREEN + "Reloaded!");
+                    } else sendMessage(sender, ChatColor.RED + "No permission.");
+                } else if (args[0].equalsIgnoreCase("import")) {
+                    if (sender.hasPermission("money.import")) {
+                        if (importer != null) {
+                            if (args.length > 1) {
+                                String pluginName = args[1];
+                                if (importer.canImport(pluginName)) {
+                                    sendMessage(sender, ChatColor.GREEN + "Import started! See console for information (and completion)");
+                                    importer.doImport(pluginName);
+                                } else
+                                    sendMessage(sender, ChatColor.RED + "That plugin was not found or is not supported by Vault!");
+                            }else{
+                                sendMessage(sender, ChatColor.GREEN + "Import started! See console for information (and completion)");
+                                importer.doImport();
+                            }
+                        } else sendMessage(sender, ChatColor.RED + "Please enable Vault.");
                     } else sendMessage(sender, ChatColor.RED + "No permission.");
                 } else {
                     // Assume player lookup
