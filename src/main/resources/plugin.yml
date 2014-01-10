@@ -1,6 +1,6 @@
 name: DumbCoin
 main: com.turt2live.dumbcoin.DumbCoin
-version: maven-version-number bjenkins-build-number
+version: maven-version-number
 description: I hate downloading plugins.
 author: turt2live
 website: http://github.com/turt2live/DumbCoin
