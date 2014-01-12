@@ -67,6 +67,7 @@ public class VaultImport {
                             lastPercent = percent;
                         }
                     }
+                    plugin.getLogger().info("[Plugin: " + economy.getName() + "] Import complete!");
                 }
             });
         }
