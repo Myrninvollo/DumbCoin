@@ -28,15 +28,24 @@ public class VaultImport {
     }
 
     public void doImport(String pluginName) {
+        if (economies.size() <= 0) {
+            DumbCoin.p.getLogger().warning("No plugins to import!");
+            return;
+        }
         for (Economy economy : economies) {
             if (economy.getName().equalsIgnoreCase(pluginName)) {
                 doImport(economy);
-                break;
+                return;
             }
         }
+        if (economies.size() <= 0) DumbCoin.p.getLogger().warning("Cannot find plugin '" + pluginName + "' to import.");
     }
 
     public void doImport() {
+        if (economies.size() <= 0) {
+            DumbCoin.p.getLogger().warning("No plugins to import!");
+            return;
+        }
         for (Economy economy : economies) {
             doImport(economy);
         }
