@@ -6,6 +6,7 @@ author: turt2live
 website: http://github.com/turt2live/DumbCoin
 build: jenkins-build-number
 softdepend: [Vault]
+load: STARTUP
 commands:
     money:
         aliases: [eco, bal, balance]

@@ -42,10 +42,10 @@ public class DumbCoin extends DumbPlugin {
             String name = "DumbCoin";
             try {
                 Economy econ = clazz.getConstructor(DumbCoin.class).newInstance(this);
-                manager.register(Economy.class, econ, this, ServicePriority.Highest);
-                vault.getLogger().info(String.format("[%s][Economy] %s found: %s", getDescription().getName(), name, econ.isEnabled() ? "Loaded" : "Waiting"));
+                manager.register(Economy.class, econ, vault, ServicePriority.Highest);
+                vault.getLogger().info(String.format("[Economy] %s found: %s", name, econ.isEnabled() ? "Loaded" : "Waiting"));
             } catch (Exception e) {
-                vault.getLogger().severe(String.format("[%s][Economy] There was an error hooking %s - check to make sure you're using a compatible version!", getDescription().getName(), name));
+                vault.getLogger().severe(String.format("[Economy] There was an error hooking %s - check to make sure you're using a compatible version!", name));
             }
         }
     }
