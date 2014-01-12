@@ -191,7 +191,7 @@ public class DumbCoin extends DumbPlugin {
                                     importer.doImport(pluginName);
                                 } else
                                     sendMessage(sender, ChatColor.RED + "That plugin was not found or is not supported by Vault!");
-                            }else{
+                            } else {
                                 sendMessage(sender, ChatColor.GREEN + "Import started! See console for information (and completion)");
                                 importer.doImport();
                             }
