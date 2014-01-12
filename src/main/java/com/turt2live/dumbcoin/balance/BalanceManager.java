@@ -1,6 +1,7 @@
 package com.turt2live.dumbcoin.balance;
 
 import com.turt2live.dumbcoin.DumbCoin;
+import com.turt2live.dumbcoin.event.BalanceChangeEvent;
 
 import java.util.Map;
 
@@ -31,6 +32,10 @@ public abstract class BalanceManager {
     public void pay(String payer, String payee, double amount) {
         withdraw(payer, amount);
         deposit(payee, amount);
+    }
+
+    protected void onChange(String account, double difference) {
+        plugin.getServer().getPluginManager().callEvent(new BalanceChangeEvent(account, difference));
     }
 
 }

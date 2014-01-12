@@ -38,11 +38,13 @@ public class YamlBalanceManager extends BalanceManager {
     @Override
     public void deposit(String player, double amount) {
         yaml.set(player.toLowerCase(), getBalance(player) + amount);
+        onChange(player, amount);
     }
 
     @Override
     public void withdraw(String player, double amount) {
         deposit(player, -amount);
+        onChange(player, -amount);
     }
 
     @Override
@@ -55,7 +57,9 @@ public class YamlBalanceManager extends BalanceManager {
 
     @Override
     public void set(String player, double amount) {
+        double difference = -(getBalance(player) - amount); // 10, set to 7, = -3.  7, set to 10, = 3
         yaml.set(player.toLowerCase(), amount);
+        onChange(player, difference);
     }
 
     @Override
