@@ -8,3 +8,11 @@ advanced:
     plural: Dollars
     singular: Dollar
     sort-every-minutes: 30
+storage:
+    use-mysql: false
+    mysql:
+        host: localhost
+        port: 3306
+        username: user
+        password: pass
+        database: economy

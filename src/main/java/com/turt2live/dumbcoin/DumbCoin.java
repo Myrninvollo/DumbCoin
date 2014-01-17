@@ -20,6 +20,8 @@ import java.util.List;
 
 public class DumbCoin extends DumbPlugin {
 
+    // TODO: MySQL support
+
     public static DumbCoin p;
 
     private BalanceManager manager;
