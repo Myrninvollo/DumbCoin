@@ -1,6 +1,4 @@
-DumbCoin
--------
-Simple. Easy. Effective.
+![DumbCoin Logo](http://home.turt2live.com/DumbCoin-BukkitDev-Logo.png)
 
 
 Features
