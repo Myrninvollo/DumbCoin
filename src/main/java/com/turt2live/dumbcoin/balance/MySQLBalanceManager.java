@@ -4,6 +4,10 @@ import com.turt2live.commonsense.data.MySQL;
 import com.turt2live.dumbcoin.DumbCoin;
 import com.turt2live.dumbcoin.Queries;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -28,6 +32,7 @@ public class MySQLBalanceManager extends BalanceManager {
         if (connection == null || queries == null) throw new IllegalArgumentException();
         this.mysql = connection;
         this.queries = queries;
+        createTable();
     }
 
     @Override
@@ -42,27 +47,60 @@ public class MySQLBalanceManager extends BalanceManager {
 
     @Override
     public double getBalance(String player) {
-        // TODO
+        PreparedStatement statement = mysql.getPreparedStatement(queries.getQuery(Queries.Query.GET_BALANCE));
+        try {
+            statement.setString(1, player);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet != null && resultSet.getFetchSize() > 0) {
+                return resultSet.getDouble("Balance");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 
     @Override
     public void set(String player, double amount) {
-        // TODO
+        update(player, amount, true);
     }
 
     @Override
     public Map<String, Double> getBalances() {
-        // TODO
-        return null;
+        Map<String, Double> map = new HashMap<String, Double>();
+        PreparedStatement statement = mysql.getPreparedStatement(queries.getQuery(Queries.Query.GET_ALL_BALANCES));
+        try {
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet != null && resultSet.getFetchSize() > 0) {
+                do {
+                    map.put(resultSet.getString("Username"), resultSet.getDouble("Balance"));
+                } while (resultSet.next());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return map;
     }
 
     private void update(String player, double amount, boolean isSet) {
-        // TODO
+        PreparedStatement statement = mysql.getPreparedStatement(queries.getQuery(isSet ? Queries.Query.UPDATE_BALANCE_SET : Queries.Query.UPDATE_BALANCE_MOD));
+        try {
+            statement.setString(1, player);
+            statement.setDouble(2, amount);
+            statement.setDouble(3, amount);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void createTable() {
-        // TODO
+        PreparedStatement statement = mysql.getPreparedStatement(queries.getQuery(Queries.Query.CREATE_TABLE));
+        try {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
