@@ -51,13 +51,13 @@ public class MySQLBalanceManager extends BalanceManager {
         try {
             statement.setString(1, player);
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet != null && resultSet.getFetchSize() > 0) {
+            if (resultSet.next()) {
                 return resultSet.getDouble("Balance");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0;
+        return plugin.getConfig().getDouble("start-balance", 10);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class MySQLBalanceManager extends BalanceManager {
         PreparedStatement statement = mysql.getPreparedStatement(queries.getQuery(Queries.Query.GET_ALL_BALANCES));
         try {
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet != null && resultSet.getFetchSize() > 0) {
+            if (resultSet.next()) {
                 do {
                     map.put(resultSet.getString("Username"), resultSet.getDouble("Balance"));
                 } while (resultSet.next());
@@ -83,6 +83,7 @@ public class MySQLBalanceManager extends BalanceManager {
     }
 
     private void update(String player, double amount, boolean isSet) {
+        if (!mysql.isConnected()) mysql.connect();
         PreparedStatement statement = mysql.getPreparedStatement(queries.getQuery(isSet ? Queries.Query.UPDATE_BALANCE_SET : Queries.Query.UPDATE_BALANCE_MOD));
         try {
             statement.setString(1, player);
@@ -95,9 +96,10 @@ public class MySQLBalanceManager extends BalanceManager {
     }
 
     private void createTable() {
+        if (!mysql.isConnected()) mysql.connect();
         PreparedStatement statement = mysql.getPreparedStatement(queries.getQuery(Queries.Query.CREATE_TABLE));
         try {
-            statement.executeUpdate();
+            statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }

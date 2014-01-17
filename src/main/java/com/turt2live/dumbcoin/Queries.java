@@ -39,20 +39,20 @@ public class Queries {
                     if (line.startsWith("-- VAR ")) {
                         // -- VAR <name> <val>
                         String[] parts = line.split(" ");
-                        if (parts.length != 3)
+                        if (parts.length != 4)
                             plugin.getLogger().warning("[MySQL] Invalid line: " + line);
                         else
-                            vars.put(parts[1], parts[2]);
+                            vars.put(parts[2], parts[3]);
                     } else if (line.startsWith("-- ACT ")) {
                         // -- ACT <query type>
                         if (lastQuery != null) {
                             queries.put(lastQuery, activeLine.toString().trim());
                         }
                         String[] parts = line.split(" ");
-                        if (parts.length != 2)
+                        if (parts.length != 3)
                             plugin.getLogger().warning("[MySQL] Invalid line: " + line);
                         else {
-                            lastQuery = Query.valueOf(parts[1]);
+                            lastQuery = Query.valueOf(parts[2]);
                             activeLine = new StringBuilder();
                         }
                     } else {
@@ -62,6 +62,9 @@ public class Queries {
                         activeLine.append(line).append(" ");
                     }
                 }
+            }
+            if (lastQuery != null) {
+                queries.put(lastQuery, activeLine.toString().trim());
             }
             reader.close();
         } catch (IOException e) {

@@ -44,7 +44,7 @@ public class DumbCoin extends DumbPlugin {
                         getConfig().getString("storage.mysql.username", "user"),
                         getConfig().getString("storage.mysql.password", "pass"),
                         getConfig().getString("storage.mysql.database", "DumbCoin"));
-                if (sql.connect() != null) {
+                if (sql.connect() == MySQL.ConnectionStatus.CONNECTED && sql.isConnected()) {
                     manager = new MySQLBalanceManager(this, sql, new Queries(this, "mysql-data.sql"));
                 } else {
                     getLogger().severe("Could not connect to MySQL, using YAML");
