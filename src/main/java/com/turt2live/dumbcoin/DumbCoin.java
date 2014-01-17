@@ -1,7 +1,10 @@
 package com.turt2live.dumbcoin;
 
 import com.turt2live.commonsense.DumbPlugin;
+import com.turt2live.commonsense.data.MySQL;
+import com.turt2live.commonsense.data.NoDriverException;
 import com.turt2live.dumbcoin.balance.BalanceManager;
+import com.turt2live.dumbcoin.balance.MySQLBalanceManager;
 import com.turt2live.dumbcoin.balance.YamlBalanceManager;
 import com.turt2live.dumbcoin.vault.Economy_DumbCoin;
 import com.turt2live.dumbcoin.vault.VaultImport;
@@ -33,7 +36,26 @@ public class DumbCoin extends DumbPlugin {
         p = this;
         saveDefaultConfig();
         initCommonSense(72122);
-        manager = new YamlBalanceManager(this);
+
+        if (getConfig().getBoolean("storage.use-mysql", false)) {
+            try {
+                MySQL sql = new MySQL(getConfig().getString("storage.mysql.hostname", "localhost"),
+                        getConfig().getInt("storage.mysql.port", 3306),
+                        getConfig().getString("storage.mysql.username", "user"),
+                        getConfig().getString("storage.mysql.password", "pass"),
+                        getConfig().getString("storage.mysql.database", "DumbCoin"));
+                if (sql.connect() != null) {
+                    manager = new MySQLBalanceManager(this, sql, new Queries(this, "mysql-data.sql"));
+                } else {
+                    getLogger().severe("Could not connect to MySQL, using YAML");
+                    manager = new YamlBalanceManager(this);
+                }
+            } catch (NoDriverException e) {
+                getLogger().severe("You have enabled MySQL but do not have a driver! Using YAML instead.");
+                manager = new YamlBalanceManager(this);
+            }
+        } else
+            manager = new YamlBalanceManager(this);
         topBalances = new TopBalanceManager();
 
         Plugin vault = getServer().getPluginManager().getPlugin("Vault");
