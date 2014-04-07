@@ -3,6 +3,7 @@ package com.turt2live.dumbcoin.balance;
 import com.turt2live.dumbcoin.DumbCoin;
 
 import java.util.Map;
+import java.util.UUID;
 
 public abstract class BalanceManager {
 
@@ -12,23 +13,27 @@ public abstract class BalanceManager {
         this.plugin = plugin;
     }
 
-    public abstract void deposit(String player, double amount);
-
-    public abstract void withdraw(String player, double amount);
-
-    public abstract double getBalance(String player);
-
-    public abstract void set(String player, double amount);
-
     public abstract void save();
 
-    public abstract Map<String, Double> getBalances();
+    public abstract void deposit(UUID player, double amount);
 
-    public boolean hasEnough(String player, double amount) {
+    public abstract void withdraw(UUID player, double amount);
+
+    public abstract double getBalance(UUID player);
+
+    public abstract void set(UUID player, double amount);
+
+    public abstract Map<UUID, Double> getBalances();
+
+    public abstract Map<String, Double> getLegacyBalances();
+
+    public abstract void removeLegacyBalance(String name);
+
+    public boolean hasEnough(UUID player, double amount) {
         return getBalance(player) >= amount;
     }
 
-    public void pay(String payer, String payee, double amount) {
+    public void pay(UUID payer, UUID payee, double amount) {
         withdraw(payer, amount);
         deposit(payee, amount);
     }

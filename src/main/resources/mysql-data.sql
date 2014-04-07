@@ -22,3 +22,6 @@ SELECT `Username`,`Balance` FROM `{TBLNAME}` WHERE `Username` = ?
 
 -- ACT GET_ALL_BALANCES
 SELECT `Username`,`Balance` FROM `{TBLNAME}` ORDER BY `Balance` DESC
+
+-- ACT REMOVE_LEGACY
+DELETE FROM `{TBLNAME}` WHERE `Username` = ?

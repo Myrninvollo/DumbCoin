@@ -69,7 +69,7 @@ public class VaultImport {
                     int lastPercent = -1;
                     for (int i = 0; i < players.length; i++) {
                         double balance = economy.getBalance(players[i].getName());
-                        plugin.getBalanceManager().set(players[i].getName(), balance);
+                        plugin.getBalanceManager().set(players[i].getUniqueId(), balance);
                         int percent = (int) ((((double) i) / ((double) players.length)) * 100);
                         if (percent % 10 == 0 && percent != lastPercent) {
                             plugin.getLogger().info("[Plugin: " + economy.getName() + "]" + i + "/" + players.length + " imported. (" + percent + "%)");

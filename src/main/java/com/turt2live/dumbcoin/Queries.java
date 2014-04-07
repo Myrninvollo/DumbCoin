@@ -19,7 +19,8 @@ public class Queries {
         UPDATE_BALANCE_MOD,
         UPDATE_BALANCE_SET,
         GET_BALANCE,
-        GET_ALL_BALANCES;
+        GET_ALL_BALANCES,
+        REMOVE_LEGACY;
     }
 
     private Map<Query, String> queries = new HashMap<Query, String>();

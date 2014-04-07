@@ -7,7 +7,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <bukkit.version>1.7.2-R0.2</bukkit.version>
+        <bukkit.version>1.7.5-R0.1-SNAPSHOT</bukkit.version>
         <vault.version>1.2.27</vault.version>
         <junit.version>4.11</junit.version>
 
@@ -36,6 +36,13 @@
         <dependency>
             <groupId>com.turt2live</groupId>
             <artifactId>CommonSense</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Hurtle -->
+        <dependency>
+            <groupId>com.turt2live</groupId>
+            <artifactId>Hurtle</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
@@ -171,6 +178,7 @@
                             <artifactSet>
                                 <includes>
                                     <include>com.turt2live:CommonSense</include>
+                                    <include>com.turt2live:Hurtle</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
@@ -181,6 +189,26 @@
                                 <relocation>
                                     <pattern>com.turt2live.CommonSense</pattern>
                                     <shadedPattern>com.turt2live.${project.name}.commonsense</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.turt2live.hurtle</pattern>
+                                    <shadedPattern>com.turt2live.${project.name}.hurtle</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.turt2live.t2limages</pattern>
+                                    <shadedPattern>com.turt2live.t2limages.${project.name}</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.jnbt.t2limages</pattern>
+                                    <shadedPattern>org.jnbt.t2limages.${project.name}</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.mojang.api</pattern>
+                                    <shadedPattern>com.mojang.api.${project.name}</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.iKeirNez.PluginMessageApiPlus</pattern>
+                                    <shadedPattern>com.ikeirnez.pluginmessageapiplus.${project.name}</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

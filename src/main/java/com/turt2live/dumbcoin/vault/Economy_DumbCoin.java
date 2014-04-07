@@ -1,6 +1,7 @@
 package com.turt2live.dumbcoin.vault;
 
 import com.turt2live.dumbcoin.DumbCoin;
+import com.turt2live.hurtle.uuid.UUIDUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
@@ -46,23 +47,23 @@ public class Economy_DumbCoin implements Economy {
 
     @Override
     public double getBalance(String playerName) {
-        return plugin.getBalanceManager().getBalance(playerName);
+        return plugin.getBalanceManager().getBalance(UUIDUtils.getUUID(playerName));
     }
 
     @Override
     public boolean has(String playerName, double v) {
-        return plugin.getBalanceManager().hasEnough(playerName, v);
+        return plugin.getBalanceManager().hasEnough(UUIDUtils.getUUID(playerName), v);
     }
 
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double v) {
-        plugin.getBalanceManager().withdraw(playerName, v);
+        plugin.getBalanceManager().withdraw(UUIDUtils.getUUID(playerName), v);
         return new EconomyResponse(v, getBalance(playerName), EconomyResponse.ResponseType.SUCCESS, null);
     }
 
     @Override
     public EconomyResponse depositPlayer(String playerName, double v) {
-        plugin.getBalanceManager().deposit(playerName, v);
+        plugin.getBalanceManager().deposit(UUIDUtils.getUUID(playerName), v);
         return new EconomyResponse(v, getBalance(playerName), EconomyResponse.ResponseType.SUCCESS, null);
     }
 

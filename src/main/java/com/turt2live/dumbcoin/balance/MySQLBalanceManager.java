@@ -3,12 +3,14 @@ package com.turt2live.dumbcoin.balance;
 import com.turt2live.commonsense.data.MySQL;
 import com.turt2live.dumbcoin.DumbCoin;
 import com.turt2live.dumbcoin.Queries;
+import com.turt2live.hurtle.uuid.UUIDServiceProvider;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Represents a balance manager which uses MySQL as a data store
@@ -36,20 +38,20 @@ public class MySQLBalanceManager extends BalanceManager {
     }
 
     @Override
-    public void deposit(String player, double amount) {
+    public void deposit(UUID player, double amount) {
         update(player, amount, false);
     }
 
     @Override
-    public void withdraw(String player, double amount) {
+    public void withdraw(UUID player, double amount) {
         update(player, -amount, false);
     }
 
     @Override
-    public double getBalance(String player) {
+    public double getBalance(UUID player) {
         PreparedStatement statement = mysql.getPreparedStatement(queries.getQuery(Queries.Query.GET_BALANCE));
         try {
-            statement.setString(1, player);
+            statement.setString(1, player == null ? "CONSOLE" : player.toString().replace("-", ""));
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getDouble("Balance");
@@ -61,19 +63,23 @@ public class MySQLBalanceManager extends BalanceManager {
     }
 
     @Override
-    public void set(String player, double amount) {
+    public void set(UUID player, double amount) {
         update(player, amount, true);
     }
 
     @Override
-    public Map<String, Double> getBalances() {
-        Map<String, Double> map = new HashMap<String, Double>();
+    public Map<UUID, Double> getBalances() {
+        Map<UUID, Double> map = new HashMap<UUID, Double>();
         PreparedStatement statement = mysql.getPreparedStatement(queries.getQuery(Queries.Query.GET_ALL_BALANCES));
         try {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 do {
-                    map.put(resultSet.getString("Username"), resultSet.getDouble("Balance"));
+                    String name = resultSet.getString("Username");
+                    if (name.length() < 32) {
+                        continue;
+                    }
+                    map.put(UUID.fromString(UUIDServiceProvider.insertDashes(name)), resultSet.getDouble("Balance"));
                 } while (resultSet.next());
             }
         } catch (SQLException e) {
@@ -82,11 +88,44 @@ public class MySQLBalanceManager extends BalanceManager {
         return map;
     }
 
-    private void update(String player, double amount, boolean isSet) {
+    @Override
+    public Map<String, Double> getLegacyBalances() {
+        Map<String, Double> map = new HashMap<String, Double>();
+        PreparedStatement statement = mysql.getPreparedStatement(queries.getQuery(Queries.Query.GET_ALL_BALANCES));
+        try {
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                do {
+                    String name = resultSet.getString("Username");
+                    if (name.length() > 16) {
+                        continue;
+                    }
+                    map.put(name, resultSet.getDouble("Balance"));
+                } while (resultSet.next());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+    @Override
+    public void removeLegacyBalance(String player) {
+        if (player == null) return;
+        PreparedStatement statement = mysql.getPreparedStatement(queries.getQuery(Queries.Query.REMOVE_LEGACY));
+        try {
+            statement.setString(1, player);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void update(UUID player, double amount, boolean isSet) {
         if (!mysql.isConnected()) mysql.connect();
         PreparedStatement statement = mysql.getPreparedStatement(queries.getQuery(isSet ? Queries.Query.UPDATE_BALANCE_SET : Queries.Query.UPDATE_BALANCE_MOD));
         try {
-            statement.setString(1, player);
+            statement.setString(1, player == null ? "CONSOLE" : player.toString().replace("-", ""));
             statement.setDouble(2, amount);
             statement.setDouble(3, amount);
             statement.executeUpdate();

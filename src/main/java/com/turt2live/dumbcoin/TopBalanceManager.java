@@ -1,12 +1,10 @@
 package com.turt2live.dumbcoin;
 
 import com.turt2live.dumbcoin.util.BalanceQuicksort;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class TopBalanceManager {
@@ -104,9 +102,9 @@ public class TopBalanceManager {
 
     private void resort() {
         List<PlayerBalance> allBalances = new ArrayList<PlayerBalance>();
-        Map<String, Double> balances = DumbCoin.p.getBalanceManager().getBalances();
-        for (String s : balances.keySet()) {
-            PlayerBalance playerBalance = new PlayerBalance(s, balances.get(s), 0);
+        Map<UUID, Double> balances = DumbCoin.p.getBalanceManager().getBalances();
+        for (UUID s : balances.keySet()) {
+            PlayerBalance playerBalance = new PlayerBalance(Bukkit.getOfflinePlayer(s).getName(), balances.get(s), 0);
             allBalances.add(playerBalance);
         }
         sorter.sort(allBalances);

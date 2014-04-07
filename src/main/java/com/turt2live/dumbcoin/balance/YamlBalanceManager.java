@@ -1,6 +1,7 @@
 package com.turt2live.dumbcoin.balance;
 
 import com.turt2live.dumbcoin.DumbCoin;
+import com.turt2live.hurtle.uuid.UUIDServiceProvider;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 public class YamlBalanceManager extends BalanceManager {
 
@@ -36,26 +38,26 @@ public class YamlBalanceManager extends BalanceManager {
     }
 
     @Override
-    public void deposit(String player, double amount) {
-        yaml.set(player.toLowerCase(), getBalance(player) + amount);
+    public void deposit(UUID player, double amount) {
+        yaml.set(player == null ? "CONSOLE" : player.toString().replace("-", ""), getBalance(player) + amount);
     }
 
     @Override
-    public void withdraw(String player, double amount) {
+    public void withdraw(UUID player, double amount) {
         deposit(player, -amount);
     }
 
     @Override
-    public double getBalance(String player) {
-        if (yaml.get(player.toLowerCase()) != null) {
-            return yaml.getDouble(player.toLowerCase());
+    public double getBalance(UUID player) {
+        if (yaml.get(player == null ? "CONSOLE" : player.toString().replace("-", "")) != null) {
+            return yaml.getDouble(player == null ? "CONSOLE" : player.toString().replace("-", ""));
         }
         return plugin.getConfig().getDouble("start-balance", 10);
     }
 
     @Override
-    public void set(String player, double amount) {
-        yaml.set(player.toLowerCase(), amount);
+    public void set(UUID player, double amount) {
+        yaml.set(player == null ? "CONSOLE" : player.toString().replace("-", ""), amount);
     }
 
     @Override
@@ -68,15 +70,36 @@ public class YamlBalanceManager extends BalanceManager {
     }
 
     @Override
-    public Map<String, Double> getBalances() {
+    public Map<UUID, Double> getBalances() {
+        Map<UUID, Double> balances = new HashMap<UUID, Double>();
+        Set<String> keys = yaml.getKeys(false);
+        if (keys != null) {
+            for (String s : keys) {
+                if (s.length() < 32) continue;
+                UUID uid = UUID.fromString(UUIDServiceProvider.insertDashes(s));
+                balances.put(uid, getBalance(uid));
+            }
+        }
+        return balances;
+    }
+
+    @Override
+    public Map<String, Double> getLegacyBalances() {
         Map<String, Double> balances = new HashMap<String, Double>();
         Set<String> keys = yaml.getKeys(false);
         if (keys != null) {
             for (String s : keys) {
-                balances.put(s, getBalance(s));
+                if (s.length() > 16) continue;
+                balances.put(s, yaml.getDouble(s.toLowerCase(), plugin.getConfig().getDouble("start-balance", 10)));
             }
         }
         return balances;
+    }
+
+    @Override
+    public void removeLegacyBalance(String name) {
+        if (name == null) return;
+        yaml.set(name, null);
     }
 
 }

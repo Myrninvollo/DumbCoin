@@ -8,6 +8,7 @@ import com.turt2live.dumbcoin.balance.MySQLBalanceManager;
 import com.turt2live.dumbcoin.balance.YamlBalanceManager;
 import com.turt2live.dumbcoin.vault.Economy_DumbCoin;
 import com.turt2live.dumbcoin.vault.VaultImport;
+import com.turt2live.hurtle.uuid.UUIDUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -85,7 +86,7 @@ public class DumbCoin extends DumbPlugin {
         if (command.getName().equalsIgnoreCase("money")) {
             if (args.length < 1) {
                 if (sender.hasPermission("money.balance")) {
-                    sendMessage(sender, "You have " + format(manager.getBalance(sender.getName())));
+                    sendMessage(sender, "You have " + format(manager.getBalance(UUIDUtils.getUUID(sender))));
                 } else sendMessage(sender, ChatColor.RED + "No permission.");
             } else {
                 String argName = null;
@@ -108,8 +109,8 @@ public class DumbCoin extends DumbPlugin {
                             sendMessage(sender, ChatColor.RED + "Incorrect syntax. Try " + ChatColor.YELLOW + "/money pay <player> <amount>");
                         else {
                             if (argAmount > 0) {
-                                if (manager.hasEnough(sender.getName(), argAmount)) {
-                                    manager.pay(sender.getName(), argName, argAmount);
+                                if (manager.hasEnough(UUIDUtils.getUUID(sender), argAmount)) {
+                                    manager.pay(UUIDUtils.getUUID(sender), UUIDUtils.getUUID(argName), argAmount);
                                     sendMessage(sender, ChatColor.GREEN + "You have paid " + argName + " " + format(argAmount));
                                     Player payee = getServer().getPlayerExact(argName);
                                     if (payee != null) {
@@ -127,7 +128,7 @@ public class DumbCoin extends DumbPlugin {
                             sendMessage(sender, ChatColor.RED + "Incorrect syntax. Try " + ChatColor.YELLOW + "/money give <player> <amount>");
                         else {
                             if (argAmount > 0) {
-                                manager.deposit(argName, argAmount);
+                                manager.deposit(UUIDUtils.getUUID(argName), argAmount);
                                 sendMessage(sender, ChatColor.GREEN + "You have added " + format(argAmount) + " to " + argName);
                             } else
                                 sendMessage(sender, ChatColor.RED + "You must provide a positive, non-zero, number!");
@@ -140,7 +141,7 @@ public class DumbCoin extends DumbPlugin {
                             sendMessage(sender, ChatColor.RED + "Incorrect syntax. Try " + ChatColor.YELLOW + "/money take <player> <amount>");
                         else {
                             if (argAmount > 0) {
-                                manager.withdraw(argName, argAmount);
+                                manager.withdraw(UUIDUtils.getUUID(argName), argAmount);
                                 sendMessage(sender, ChatColor.GREEN + "You have taken " + format(argAmount) + " from " + argName);
                             } else
                                 sendMessage(sender, ChatColor.RED + "You must provide a positive, non-zero, number!");
@@ -154,7 +155,7 @@ public class DumbCoin extends DumbPlugin {
                                 sendMessage(sender, ChatColor.RED + "Incorrect syntax. Try " + ChatColor.YELLOW + "/money set <player> <amount>");
                             else {
                                 if (argAmount > 0) {
-                                    manager.set(argName, argAmount);
+                                    manager.set(UUIDUtils.getUUID(argName), argAmount);
                                     sendMessage(sender, ChatColor.GREEN + "You have set " + argName + "'s account to " + format(argAmount));
                                 } else
                                     sendMessage(sender, ChatColor.RED + "You must provide a positive, non-zero, number!");
@@ -224,7 +225,7 @@ public class DumbCoin extends DumbPlugin {
                 } else {
                     // Assume player lookup
                     if (sender.hasPermission("money.balance.others")) {
-                        sendMessage(sender, args[0] + " has " + format(manager.getBalance(args[0])));
+                        sendMessage(sender, args[0] + " has " + format(manager.getBalance(UUIDUtils.getUUID(args[0]))));
                     } else sendMessage(sender, ChatColor.RED + "No permission.");
                 }
             }
