@@ -28,6 +28,10 @@ Commands
 
 `/money import [pluginName]` - Imports balances from an existing plugin(s)
 
+`/money uuid` - Converts the DumbCoin database to be in UUID format
+
+`/money convert <yaml/mysql> <yaml/mysql>` - Converts the DumbCoin database between backends
+
 
 Permissions
 ------
@@ -49,6 +53,10 @@ Permissions
 `money.reload` - Allows /money reload
 
 `money.import` - Allows /money import [pluginName]
+
+`money.uuid` - Allows /money uuid
+
+`money.convert` - Allows /money convert <yaml/mysql> <yaml/mysql>
 
 
 Background

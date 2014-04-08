@@ -10,7 +10,7 @@ load: STARTUP
 commands:
     money:
         aliases: [eco, bal, balance]
-        usage: /<command> <playerName | pay | give | take | set | top | reload> [...]
+        usage: /<command> <playerName | pay | give | take | set | top | uuid | convert | reload> [...]
         description: Money command
 permissions:
     money.balance:
@@ -43,3 +43,6 @@ permissions:
     money.uuid:
         default: op
         description: Allows /money uuid
+    money.convert:
+        default: op
+        description: Allows /money convert <yaml/mysql> <yaml/mysql>
