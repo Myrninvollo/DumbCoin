@@ -27,7 +27,12 @@ class UUIDChangeover implements Runnable {
         plugin.getLogger().info("UUID Changeover started");
         if (legacy != null) {
             File backupFile = new File(plugin.getDataFolder(), "backup_balances.yml");
-            if (!backupFile.exists()) try {
+            int c = 1;
+            while (backupFile.exists()) {
+                backupFile = new File(plugin.getDataFolder(), "backup_balances" + c + ".yml");
+                c++;
+            }
+            try {
                 backupFile.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
