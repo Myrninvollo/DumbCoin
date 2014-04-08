@@ -207,7 +207,7 @@
                                     <shadedPattern>com.mojang.api.${project.name}</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>com.iKeirNez.PluginMessageApiPlus</pattern>
+                                    <pattern>com.ikeirnez.pluginmessageapiplus</pattern>
                                     <shadedPattern>com.ikeirnez.pluginmessageapiplus.${project.name}</shadedPattern>
                                 </relocation>
                             </relocations>
