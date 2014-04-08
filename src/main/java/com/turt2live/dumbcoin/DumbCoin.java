@@ -100,15 +100,17 @@ public class DumbCoin extends DumbPlugin {
         Plugin vault = getServer().getPluginManager().getPlugin("Vault");
         if (vault != null) {
             importer = new VaultImport();
-            ServicesManager manager = getServer().getServicesManager();
-            Class<? extends Economy> clazz = Economy_DumbCoin.class;
-            String name = "DumbCoin";
-            try {
-                Economy econ = clazz.getConstructor(DumbCoin.class).newInstance(this);
-                manager.register(Economy.class, econ, vault, ServicePriority.Highest);
-                vault.getLogger().info(String.format("[Economy] %s found: %s", name, econ.isEnabled() ? "Loaded" : "Waiting"));
-            } catch (Exception e) {
-                vault.getLogger().severe(String.format("[Economy] There was an error hooking %s - check to make sure you're using a compatible version!", name));
+            if (getConfig().getBoolean("advanced.register-vault", true)) {
+                ServicesManager manager = getServer().getServicesManager();
+                Class<? extends Economy> clazz = Economy_DumbCoin.class;
+                String name = "DumbCoin";
+                try {
+                    Economy econ = clazz.getConstructor(DumbCoin.class).newInstance(this);
+                    manager.register(Economy.class, econ, vault, ServicePriority.Highest);
+                    vault.getLogger().info(String.format("[Economy] %s found: %s", name, econ.isEnabled() ? "Loaded" : "Waiting"));
+                } catch (Exception e) {
+                    vault.getLogger().severe(String.format("[Economy] There was an error hooking %s - check to make sure you're using a compatible version!", name));
+                }
             }
         }
     }
