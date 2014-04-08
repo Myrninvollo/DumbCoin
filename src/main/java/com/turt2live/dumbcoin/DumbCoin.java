@@ -247,6 +247,8 @@ public class DumbCoin extends DumbPlugin {
                     sendMessage(sender, ChatColor.GREEN + "/money set <player> <amount>" + ChatColor.GRAY + " - " + ChatColor.AQUA + "Sets <player>'s account to have <amount> money");
                     sendMessage(sender, ChatColor.GREEN + "/money top [page]" + ChatColor.GRAY + " - " + ChatColor.AQUA + "Shows top players ranked by balance");
                     sendMessage(sender, ChatColor.GREEN + "/money uuid" + ChatColor.GRAY + " - " + ChatColor.AQUA + "Converts all non-UUID records to be UUID records");
+                    sendMessage(sender, ChatColor.GREEN + "/money convert yaml mysql" + ChatColor.GRAY + " - " + ChatColor.AQUA + "Converts YAML -> MySQL");
+                    sendMessage(sender, ChatColor.GREEN + "/money convert mysql yaml" + ChatColor.GRAY + " - " + ChatColor.AQUA + "Converts MySQL -> YAML");
                     sendMessage(sender, ChatColor.GREEN + "/money reload" + ChatColor.GRAY + " - " + ChatColor.AQUA + "Reloads the configuration");
                 } else if (args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("rl")) {
                     if (sender.hasPermission("money.reload")) {
@@ -274,6 +276,24 @@ public class DumbCoin extends DumbPlugin {
                         sendMessage(sender, "Converting non-UUID records using a merge strategy...");
                         getServer().getScheduler().runTask(this, new UUIDChangeover(sender));
                     } else sendMessage(sender, ChatColor.RED + "No permission.");
+                }else if(args[0].equalsIgnoreCase("convert")){
+                    if(sender.hasPermission("money.convert")){
+                        if(args.length<3){
+                            sendMessage(sender, ChatColor.RED+"Incorrect syntax. Try "+ChatColor.YELLOW+"/money convert <yaml/mysql> <yaml/mysql>");
+                        }else{
+                            String from = args[1];
+                            String to = args[2];
+
+                            BalanceConverter.Format fto = BalanceConverter.Format.fromName(to);
+                            BalanceConverter.Format ffrom = BalanceConverter.Format.fromName(from);
+                            if(fto==null||ffrom==null||ffrom==fto){
+                                sendMessage(sender, ChatColor.RED+"Incorrect syntax. Try "+ChatColor.YELLOW+"/money convert <yaml/mysql> <yaml/mysql>");
+                            }else{
+                                sendMessage(sender,"Starting conversion");
+                                getServer().getScheduler().runTask(this,new BalanceConverter(ffrom,fto,sender));
+                            }
+                        }
+                    }else sendMessage(sender,ChatColor.RED+"No permission.");
                 } else {
                     // Assume player lookup
                     if (sender.hasPermission("money.balance.others")) {
