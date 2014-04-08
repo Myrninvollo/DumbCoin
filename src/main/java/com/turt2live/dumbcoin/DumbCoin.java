@@ -170,8 +170,9 @@ public class DumbCoin extends DumbPlugin {
                             if (argAmount > 0) {
                                 manager.deposit(UUIDUtils.getUUID(argName), argAmount);
                                 sendMessage(sender, ChatColor.GREEN + "You have added " + format(argAmount) + " to " + argName);
-                                 Player target = Bukkit.getPlayerExact(argName);
- +                               sendMessage(target, ChatColor.GREEN + sender.getName() + " has sent you " + argAmount);
+                                Player target = getServer().getPlayerExact(argName);
+                                if (target != null)
+                                    sendMessage(target, ChatColor.GREEN + sender.getName() + " has sent you " + format(argAmount));
                             } else
                                 sendMessage(sender, ChatColor.RED + "You must provide a positive, non-zero, number!");
                         }
@@ -185,8 +186,9 @@ public class DumbCoin extends DumbPlugin {
                             if (argAmount > 0) {
                                 manager.withdraw(UUIDUtils.getUUID(argName), argAmount);
                                 sendMessage(sender, ChatColor.GREEN + "You have taken " + format(argAmount) + " from " + argName);
-                                 Player target = Bukkit.getPlayerExact(argName);
- +                               sendMessage(target, ChatColor.GREEN + sender.getName() + " has taken " + argAmount + ChatColor.GREEN + " from you!");
+                                Player target = getServer().getPlayerExact(argName);
+                                if (target != null)
+                                    sendMessage(target, ChatColor.GREEN + sender.getName() + " has taken " + format(argAmount) + " from you!");
                             } else
                                 sendMessage(sender, ChatColor.RED + "You must provide a positive, non-zero, number!");
                         }
