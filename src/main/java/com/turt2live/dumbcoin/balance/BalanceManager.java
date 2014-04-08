@@ -21,6 +21,8 @@ public abstract class BalanceManager {
 
     public abstract double getBalance(UUID player);
 
+    public abstract double getBalanceNoStart(UUID player);
+
     public abstract void set(UUID player, double amount);
 
     public abstract Map<UUID, Double> getBalances();

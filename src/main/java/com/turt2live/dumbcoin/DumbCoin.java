@@ -200,6 +200,7 @@ public class DumbCoin extends DumbPlugin {
                     sendMessage(sender, ChatColor.GREEN + "/money take <player> <amount>" + ChatColor.GRAY + " - " + ChatColor.AQUA + "Takes <amount> money from <player>");
                     sendMessage(sender, ChatColor.GREEN + "/money set <player> <amount>" + ChatColor.GRAY + " - " + ChatColor.AQUA + "Sets <player>'s account to have <amount> money");
                     sendMessage(sender, ChatColor.GREEN + "/money top [page]" + ChatColor.GRAY + " - " + ChatColor.AQUA + "Shows top players ranked by balance");
+                    sendMessage(sender, ChatColor.GREEN + "/money uuid" + ChatColor.GRAY + " - " + ChatColor.AQUA + "Converts all non-UUID records to be UUID records");
                     sendMessage(sender, ChatColor.GREEN + "/money reload" + ChatColor.GRAY + " - " + ChatColor.AQUA + "Reloads the configuration");
                 } else if (args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("rl")) {
                     if (sender.hasPermission("money.reload")) {
@@ -221,6 +222,11 @@ public class DumbCoin extends DumbPlugin {
                                 importer.doImport();
                             }
                         } else sendMessage(sender, ChatColor.RED + "Please enable Vault.");
+                    } else sendMessage(sender, ChatColor.RED + "No permission.");
+                } else if (args[0].equalsIgnoreCase("uuid")) {
+                    if (sender.hasPermission("money.uuid")) {
+                        sendMessage(sender, "Converting non-UUID records using a merge strategy...");
+                        getServer().getScheduler().runTask(this, new UUIDChangeover(sender));
                     } else sendMessage(sender, ChatColor.RED + "No permission.");
                 } else {
                     // Assume player lookup

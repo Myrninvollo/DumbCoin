@@ -40,3 +40,6 @@ permissions:
     money.import:
         default: op
         description: Allows /money import [pluginName]
+    money.uuid:
+        default: op
+        description: Allows /money uuid

@@ -63,6 +63,21 @@ public class MySQLBalanceManager extends BalanceManager {
     }
 
     @Override
+    public double getBalanceNoStart(UUID player) {
+        PreparedStatement statement = mysql.getPreparedStatement(queries.getQuery(Queries.Query.GET_BALANCE));
+        try {
+            statement.setString(1, player == null ? "CONSOLE" : player.toString().replace("-", ""));
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getDouble("Balance");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Override
     public void set(UUID player, double amount) {
         update(player, amount, true);
     }

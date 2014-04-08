@@ -56,6 +56,14 @@ public class YamlBalanceManager extends BalanceManager {
     }
 
     @Override
+    public double getBalanceNoStart(UUID player) {
+        if (yaml.get(player == null ? "CONSOLE" : player.toString().replace("-", "")) != null) {
+            return yaml.getDouble(player == null ? "CONSOLE" : player.toString().replace("-", ""));
+        }
+        return 0;
+    }
+
+    @Override
     public void set(UUID player, double amount) {
         yaml.set(player == null ? "CONSOLE" : player.toString().replace("-", ""), amount);
     }
