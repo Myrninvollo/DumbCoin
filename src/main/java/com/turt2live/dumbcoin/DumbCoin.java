@@ -38,6 +38,23 @@ public class DumbCoin extends DumbPlugin {
         saveDefaultConfig();
         initCommonSense(72122);
 
+        if (!getServer().getOnlineMode() && !getConfig().getBoolean("this-is-a-proxy-server-and-I-understand-the-risks-of-offline-mode", false)) {
+            getLogger().warning("--=================================================--");
+            getLogger().warning("          YOUR SERVER IS IN OFFLINE MODE             ");
+            getLogger().warning("  DumbCoin will continue to operate, but due to how  ");
+            getLogger().warning("  UUIDs work, support cannot be provided for your    ");
+            getLogger().warning("  server, and you may have some interesting bugs.    ");
+            getLogger().warning("                                                     ");
+            getLogger().warning("  Please enable online mode to get proper support    ");
+            getLogger().warning("  as well as avoid weird bugs. Please see BukkitDev  ");
+            getLogger().warning("  for more information.                              ");
+            getLogger().warning("                                                     ");
+            getLogger().warning("  If your server is behind a proxy, please see the   ");
+            getLogger().warning("  configuration. Disabling this warning while not    ");
+            getLogger().warning("  being behind a proxy is just rude.                 ");
+            getLogger().warning("--=================================================--");
+        }
+
         if (getConfig().getBoolean("storage.use-mysql", false)) {
             try {
                 MySQL sql = new MySQL(getConfig().getString("storage.mysql.hostname", "localhost"),
