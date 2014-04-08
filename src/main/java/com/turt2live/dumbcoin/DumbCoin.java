@@ -11,6 +11,7 @@ import com.turt2live.dumbcoin.vault.VaultImport;
 import com.turt2live.hurtle.uuid.UUIDUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -37,6 +38,26 @@ public class DumbCoin extends DumbPlugin {
         p = this;
         saveDefaultConfig();
         initCommonSense(72122);
+
+        try {
+            if (OfflinePlayer.class.getMethod("getUniqueId") == null) {
+                throw new NoSuchMethodException(); // Hacky way of ensuring this is validated :D
+            }
+        } catch (NoSuchMethodException e) {
+            getLogger().severe("--=================================================--");
+            getLogger().severe("         YOUR SERVER VERSION IS NOT SUPPORTED        ");
+            getLogger().severe("  DumbCoin relies on a method in OfflinePlayer to    ");
+            getLogger().severe("  be present in order to operate. This method could  ");
+            getLogger().severe("  not be found and therefore DumbCoin will now       ");
+            getLogger().severe("  disable itself to avoid further problems.          ");
+            getLogger().severe("                                                     ");
+            getLogger().severe("  The fix? Update your server.                       ");
+            getLogger().severe("--=================================================--");
+
+            // Nope.
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
         if (!getServer().getOnlineMode() && !getConfig().getBoolean("this-is-a-proxy-server-and-I-understand-the-risks-of-offline-mode", false)) {
             getLogger().warning("--=================================================--");
