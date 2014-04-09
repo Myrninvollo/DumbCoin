@@ -25,8 +25,6 @@ import java.util.List;
 
 public class DumbCoin extends DumbPlugin {
 
-    // TODO: MySQL support
-
     public static DumbCoin p;
 
     private BalanceManager manager;
@@ -276,24 +274,24 @@ public class DumbCoin extends DumbPlugin {
                         sendMessage(sender, "Converting non-UUID records using a merge strategy...");
                         getServer().getScheduler().runTask(this, new UUIDChangeover(sender));
                     } else sendMessage(sender, ChatColor.RED + "No permission.");
-                }else if(args[0].equalsIgnoreCase("convert")){
-                    if(sender.hasPermission("money.convert")){
-                        if(args.length<3){
-                            sendMessage(sender, ChatColor.RED+"Incorrect syntax. Try "+ChatColor.YELLOW+"/money convert <yaml/mysql> <yaml/mysql>");
-                        }else{
+                } else if (args[0].equalsIgnoreCase("convert")) {
+                    if (sender.hasPermission("money.convert")) {
+                        if (args.length < 3) {
+                            sendMessage(sender, ChatColor.RED + "Incorrect syntax. Try " + ChatColor.YELLOW + "/money convert <yaml/mysql> <yaml/mysql>");
+                        } else {
                             String from = args[1];
                             String to = args[2];
 
                             BalanceConverter.Format fto = BalanceConverter.Format.fromName(to);
                             BalanceConverter.Format ffrom = BalanceConverter.Format.fromName(from);
-                            if(fto==null||ffrom==null||ffrom==fto){
-                                sendMessage(sender, ChatColor.RED+"Incorrect syntax. Try "+ChatColor.YELLOW+"/money convert <yaml/mysql> <yaml/mysql>");
-                            }else{
-                                sendMessage(sender,"Starting conversion");
-                                getServer().getScheduler().runTask(this,new BalanceConverter(ffrom,fto,sender));
+                            if (fto == null || ffrom == null || ffrom == fto) {
+                                sendMessage(sender, ChatColor.RED + "Incorrect syntax. Try " + ChatColor.YELLOW + "/money convert <yaml/mysql> <yaml/mysql>");
+                            } else {
+                                sendMessage(sender, "Starting conversion");
+                                getServer().getScheduler().runTask(this, new BalanceConverter(ffrom, fto, sender));
                             }
                         }
-                    }else sendMessage(sender,ChatColor.RED+"No permission.");
+                    } else sendMessage(sender, ChatColor.RED + "No permission.");
                 } else {
                     // Assume player lookup
                     if (sender.hasPermission("money.balance.others")) {
