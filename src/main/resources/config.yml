@@ -17,3 +17,4 @@ storage:
         password: pass
         database: economy
 this-is-a-proxy-server-and-I-understand-the-risks-of-offline-mode: false
+prefix: '&7[DumbCoin]'
