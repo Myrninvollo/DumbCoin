@@ -8,6 +8,7 @@ import com.turt2live.dumbcoin.balance.MySQLBalanceManager;
 import com.turt2live.dumbcoin.balance.YamlBalanceManager;
 import com.turt2live.dumbcoin.vault.Economy_DumbCoin;
 import com.turt2live.dumbcoin.vault.VaultImport;
+import com.turt2live.hurtle.input.TimeMatcher;
 import com.turt2live.hurtle.uuid.UUIDUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
@@ -36,6 +37,8 @@ public class DumbCoin extends DumbPlugin {
         p = this;
         saveDefaultConfig();
         initCommonSense(72122);
+
+        reloadPlugin();
 
         try {
             if (OfflinePlayer.class.getMethod("getUniqueId") == null) {
@@ -250,7 +253,7 @@ public class DumbCoin extends DumbPlugin {
                     sendMessage(sender, ChatColor.GREEN + "/money reload" + ChatColor.GRAY + " - " + ChatColor.AQUA + "Reloads the configuration");
                 } else if (args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("rl")) {
                     if (sender.hasPermission("money.reload")) {
-                        reloadConfig();
+                        reloadPlugin();
                         sendMessage(sender, ChatColor.GREEN + "Reloaded!");
                     } else sendMessage(sender, ChatColor.RED + "No permission.");
                 } else if (args[0].equalsIgnoreCase("import")) {
@@ -304,6 +307,22 @@ public class DumbCoin extends DumbPlugin {
         }
         return true;
     }
+
+    private void reloadPlugin() {
+        reloadConfig();
+
+        long saveEvery = TimeMatcher.getMilliseconds(getConfig().getString("advanced.save-every", "60s")) / 1000;
+        if (saveEvery > 0) {
+            getServer().getScheduler().runTaskTimer(this, new Runnable() {
+                @Override
+                public void run() {
+                    getLogger().info("Running periodic save");
+                    manager.save();
+                }
+            }, saveEvery * 20, saveEvery * 20);
+        }
+    }
+
 
     public TopBalanceManager getTopBalanceManager() {
         return topBalances;

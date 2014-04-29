@@ -8,6 +8,7 @@ advanced:
     plural: Dollars
     singular: Dollar
     sort-every-minutes: 30
+    save-every: 60s
 storage:
     use-mysql: false
     mysql:
