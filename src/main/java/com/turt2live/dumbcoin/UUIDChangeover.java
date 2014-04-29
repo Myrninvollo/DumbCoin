@@ -42,6 +42,10 @@ class UUIDChangeover implements Runnable {
             for (Map.Entry<String, Double> record : legacy.entrySet()) {
                 plugin.getLogger().info("Converting " + record.getKey() + " (" + record.getValue() + ")...");
                 UUID uuid = UUIDUtils.getUUID(record.getKey());
+                if (uuid == null) {
+                    plugin.getLogger().warning("Warning! No UUID found for account " + record.getKey() + "!");
+                    continue;
+                }
                 double current = manager.getBalanceNoStart(uuid);
                 current += record.getValue();
                 manager.set(uuid, current);
