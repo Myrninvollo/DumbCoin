@@ -2,12 +2,12 @@ package com.turt2live.dumbcoin.vault;
 
 import com.turt2live.dumbcoin.DumbCoin;
 import com.turt2live.hurtle.uuid.UUIDUtils;
-import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.AbstractEconomy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 import java.util.List;
 
-public class Economy_DumbCoin implements Economy {
+public class Economy_DumbCoin extends AbstractEconomy {
 
     private DumbCoin plugin;
 
