@@ -5,7 +5,7 @@ import com.turt2live.commonsense.data.NoDriverException;
 import com.turt2live.dumbcoin.balance.BalanceManager;
 import com.turt2live.dumbcoin.balance.MySQLBalanceManager;
 import com.turt2live.dumbcoin.balance.YamlBalanceManager;
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import java.util.Map;
